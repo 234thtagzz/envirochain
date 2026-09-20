@@ -12,7 +12,7 @@ import type {
   ChartDataPoint,
 } from '../types'
 
-// Re-export supabase untuk kompatibilitas import dari service ini
+// Re-export supabase for import compatibility from this service
 export { supabase }
 
 export async function getSensors(): Promise<Sensor[]> {
@@ -292,7 +292,7 @@ export async function getProfile() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  // Fallback berbasis auth metadata - dipakai jika query profiles gagal (RLS 403 / row belum ada)
+  // Fallback based on auth metadata - used if profiles query fails (RLS 403 / row not found)
   const fallback = {
     id: user.id,
     email: user.email || '',
@@ -310,7 +310,7 @@ export async function getProfile() {
     }
 
     if (!data) {
-      // Profile belum ada (user dibuat sebelum trigger handle_new_user) -> coba auto-create
+      // Profile not found (user created before handle_new_user trigger) -> try auto-create
       console.warn('getProfile: profile not found, creating fallback profile for', user.id)
       const { data: inserted, error: insertError } = await supabase
         .from('profiles')

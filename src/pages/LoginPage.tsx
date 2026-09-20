@@ -19,9 +19,9 @@ export default function LoginPage() {
       if (err) {
         setError(err.message || 'Invalid credentials')
       }
-      // Jangan navigate manual - App.tsx onAuthStateChange akan setUser dan
-      // route guard `!user ? <LoginPage/> : <Navigate to="/dashboard"/>` akan redirect otomatis.
-      // Ini mencegah race condition dimana /dashboard di-load sebelum profile selesai di-fetch.
+      // Do not navigate manually - App.tsx onAuthStateChange will setUser and
+      // route guard `!user ? <LoginPage/> : <Navigate to="/dashboard"/>` will redirect automatically.
+      // This prevents race condition where /dashboard loads before profile fetch completes.
     } catch {
       setError('An error occurred')
     } finally {

@@ -45,7 +45,7 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Backfill profiles untuk user yang sudah ada sebelum trigger dibuat (mencegah login loop 403)
+-- Backfill profiles for users created before trigger was added (prevents 403 login loop)
 INSERT INTO public.profiles (id, auth_id, email, full_name, organization, role)
 SELECT
   u.email,
