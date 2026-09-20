@@ -2,6 +2,7 @@ import { clsx } from 'clsx';
 import { AlertTriangle, AlertCircle, Info, Check } from 'lucide-react';
 import type { EnvironmentalAlert } from '../../types';
 import { formatDate } from '../../utils/formatters';
+import Badge from './Badge';
 
 interface AlertCardProps {
   alert: EnvironmentalAlert;
@@ -13,21 +14,21 @@ const alertStyles = {
     bg: 'bg-red-50',
     icon: AlertCircle,
     iconColor: 'text-red-500',
-    badge: 'bg-red-100 text-red-700',
+    variant: 'danger' as const,
   },
   warning: {
     border: 'border-l-amber-500',
     bg: 'bg-amber-50',
     icon: AlertTriangle,
     iconColor: 'text-amber-500',
-    badge: 'bg-amber-100 text-amber-700',
+    variant: 'warning' as const,
   },
   info: {
     border: 'border-l-blue-500',
     bg: 'bg-blue-50',
     icon: Info,
     iconColor: 'text-blue-500',
-    badge: 'bg-blue-100 text-blue-700',
+    variant: 'info' as const,
   },
 };
 
@@ -38,14 +39,14 @@ export default function AlertCard({ alert }: AlertCardProps) {
   return (
     <div
       className={clsx(
-        'rounded-lg border-l-4 p-4 shadow-sm transition hover:shadow-md',
+        'rounded-xl border-l-4 p-4 shadow-sm ring-1 ring-gray-900/5 transition hover:shadow-md',
         styles.border,
         alert.acknowledged ? 'bg-gray-50 opacity-60' : styles.bg
       )}
     >
       <div className="flex items-start gap-3">
-        <div className={clsx('mt-0.5 flex-shrink-0', styles.iconColor)}>
-          <Icon className="h-5 w-5" />
+        <div className={clsx('flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5', styles.iconColor)}>
+          <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
@@ -54,27 +55,22 @@ export default function AlertCard({ alert }: AlertCardProps) {
                 <h4 className="text-sm font-semibold text-gray-900">
                   {alert.title}
                 </h4>
-                <span
-                  className={clsx(
-                    'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
-                    styles.badge
-                  )}
-                >
-                  {alert.type}
-                </span>
+                <Badge variant={styles.variant} size="sm">{alert.type}</Badge>
               </div>
-              <p className="mt-1 text-sm text-gray-600">{alert.message}</p>
+              <p className="mt-1 text-sm leading-relaxed text-gray-600">{alert.message}</p>
             </div>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500">
             <span>Sensor: {alert.sensorName}</span>
+            <span className="hidden sm:inline text-gray-300">·</span>
             <span>
               Value: {alert.value} {alert.unit}
             </span>
+            <span className="hidden sm:inline text-gray-300">·</span>
             <span>{formatDate(alert.timestamp)}</span>
           </div>
           {!alert.acknowledged && (
-            <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1 text-xs font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <button className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               <Check className="h-3.5 w-3.5" />
               Acknowledge
             </button>

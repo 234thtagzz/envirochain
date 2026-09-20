@@ -1,0 +1,11 @@
+[project]
+name = "envirochain"
+project_ref = "iwlomvjddvhvaslyeuzg"
+
+[cli]
+database_url = ""
+
+[db]
+database = "postgres"
+migrations_path = "./supabase/migrations"
+seed_path = "./supabase/seed"
