@@ -60,7 +60,7 @@ function GreenIndexBreakdown({ data }: { data: GreenIndex[] }) {
       <div className="space-y-4">
         <p className="text-xs leading-relaxed text-gray-500">Composite score from six weighted dimensions. Higher is better.</p>
         <BarChart data={chartData} xKey="name" yKey="score" color="#059669" height={260} />
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-50">
+        <div className="grid grid-cols-3 gap-2 py-5 border-t border-gray-50">
           {top5.map(o => (
             <div key={o.id} className="text-center">
               <p className="text-xs font-semibold text-gray-900 truncate">{o.organizationName.split(' ')[0]}</p>
@@ -235,6 +235,18 @@ export default function DashboardPage() {
               <span className="text-xs font-semibold text-gray-900">{topOrgs[0]?.greenIndexScore} pts</span>
             </div>
           </DataCard>
+
+          <DataCard
+            title="Sensor Status"
+            headerAction={<Badge variant="success" size="sm"><span className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5 inline-block" />{sensors.filter(s=>s.status==='online').length} online</Badge>}
+          >
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              {quickSensors.map((sensor) => <SensorCard key={sensor.id} sensor={sensor} />)}
+            </div>
+            <a href="/sensors" className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-slate-900 px-3 py-2 text-xs font-medium text-white hover:bg-slate-800">
+              <Radio className="h-3.5 w-3.5" /> Manage sensors
+            </a>
+          </DataCard>
         </div>
 
         {/* Right stack - 5 kolom */}
@@ -248,18 +260,6 @@ export default function DashboardPage() {
             </div>
             <a href="/alerts" className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50">
               <ShieldAlert className="h-3.5 w-3.5" /> View all alerts
-            </a>
-          </DataCard>
-
-          <DataCard
-            title="Sensor Status"
-            headerAction={<Badge variant="success" size="sm"><span className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5 inline-block" />{sensors.filter(s=>s.status==='online').length} online</Badge>}
-          >
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {quickSensors.map((sensor) => <SensorCard key={sensor.id} sensor={sensor} />)}
-            </div>
-            <a href="/sensors" className="mt-4 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-slate-900 px-3 py-2 text-xs font-medium text-white hover:bg-slate-800">
-              <Radio className="h-3.5 w-3.5" /> Manage sensors
             </a>
           </DataCard>
         </div>
